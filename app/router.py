@@ -1,5 +1,5 @@
 from fastapi import APIRouter
+from controllers.product_controller import router as product
 
 api_router = APIRouter()
-# Example to how to include router
-# api_router.include_router(<name>, prefix='/<name>', tags=['name']) | Need the controller
+api_router.include_router(product, prefix='/product', tags=['product'],)
