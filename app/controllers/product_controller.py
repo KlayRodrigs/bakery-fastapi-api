@@ -1,16 +1,25 @@
-from fastapi import APIRouter, status
-from core.database import db_dependency
-import models
-import models.product_model
-from core.database import engine
+from fastapi import APIRouter, Depends, HTTPException, status
+from requests import Session
+from repositories.product_repository import ProductRepository
+from services.product_service import ProductService
+from core.database import get_db
+from models.product_model import ProductBase
 
 router = APIRouter()
 
-class ProductController:
-    models.product_model.Base.metadata.create_all(bind=engine)  
-    
-    @router.post('/add/')
-    async def create_product(db: db_dependency, product: models.product_model.ProductBase):
-        db_product = models.product_model.ProductModel(product_name=product.product_name)
-        db.add(db_product)
-        db.commit()
+def get_product_service(db: Session = Depends(get_db)) -> ProductService:
+    product_repository = ProductRepository(db)
+    return ProductService(product_repository=product_repository)
+
+                
+@router.post('/add/')
+async def create_product(product_base: ProductBase, product_service: ProductService = Depends(get_product_service)):
+    response = product_service.create_product(product_base)
+    if "error" in response:
+        raise HTTPException(status_code=500, detail=response["message"])
+    return response
+        
+@router.get('/{product_id}')
+async def get_product(product_id: int, product_service: ProductService = Depends(get_product_service)):
+    product = product_service.get_product(product_id)
+    return product
