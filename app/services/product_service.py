@@ -20,3 +20,9 @@ class ProductService():
         except Exception as e:
             return {"message": "Something went wrong, the product was not added", "error": str(e)}
             
+    def delete_product(self, product_id: int):
+        try:
+            self.product_repository.delete_product(product_id)
+            return {"message": "Product was deleted successfully"}
+        except Exception:
+            return {"message": "Something went wrong, the product was not deleted"}

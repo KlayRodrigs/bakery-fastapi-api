@@ -23,3 +23,8 @@ async def create_product(product_base: ProductBase, product_service: ProductServ
 async def get_product(product_id: int, product_service: ProductService = Depends(get_product_service)):
     product = product_service.get_product(product_id)
     return product
+
+@router.delete('/{product_id}')
+async def delete_product(product_id: int, product_service: ProductService = Depends(get_product_service)):
+    product = product_service.delete_product(product_id)
+    return product

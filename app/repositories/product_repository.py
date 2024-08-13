@@ -13,3 +13,10 @@ class ProductRepository:
         self.db.add(db_product)
         self.db.commit()
         return db_product
+    
+    def delete_product(self, product_id: int):
+        db_product = self.db.query(ProductModel).filter(ProductModel.id == product_id).first()   
+        self.db.delete(db_product)
+        self.db.commit()
+        return db_product
+            
