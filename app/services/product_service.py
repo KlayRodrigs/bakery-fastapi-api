@@ -13,6 +13,13 @@ class ProductService():
             raise HTTPException(status_code=404, detail='Product is not found')
         return product
     
+    def get_all_products(self):
+        try:
+            return self.product_repository.get_all_products()
+        except Exception as e:
+            return {"message": "Something went wrong", "error": str(e)}
+        
+    
     def create_product(self, product_base: ProductBase):
         try:
             new_product = self.product_repository.create_product(product=product_base)

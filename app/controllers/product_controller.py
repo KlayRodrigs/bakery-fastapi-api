@@ -23,3 +23,8 @@ async def create_product(product_base: ProductBase, product_service: ProductServ
 async def get_product(product_id: int, product_service: ProductService = Depends(get_product_service)):
     product = product_service.get_product(product_id)
     return product
+
+@router.get('/all-products/')
+async def get_all_products(product_service: ProductService = Depends(get_product_service)):
+    products = product_service.get_all_products()
+    return products
