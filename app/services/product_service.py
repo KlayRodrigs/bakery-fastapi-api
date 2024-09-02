@@ -18,8 +18,7 @@ class ProductService():
             return self.product_repository.get_all_products()
         except Exception as e:
             return {"message": "Something went wrong", "error": str(e)}
-        
-    
+       
     def create_product(self, product_base: ProductBase):
         try:
             new_product = self.product_repository.create_product(product=product_base)
@@ -27,6 +26,13 @@ class ProductService():
         except Exception as e:
             return {"message": "Something went wrong, the product was not added", "error": str(e)}
             
+    def delete_product(self, product_id: int):
+        try:
+            self.product_repository.delete_product(product_id)
+            return {"message": "Product was deleted successfully"}
+        except Exception:
+            return {"message": "Something went wrong, the product was not deleted"}
+
     def update_product(self, product_id: int, new_product: ProductBase):
         product = self.product_repository.update_product(product_id, new_product)
         if not product:

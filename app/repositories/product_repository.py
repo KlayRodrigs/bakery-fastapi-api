@@ -18,6 +18,12 @@ class ProductRepository:
         self.db.commit()
         return db_product
     
+    def delete_product(self, product_id: int):
+        db_product = self.db.query(ProductModel).filter(ProductModel.id == product_id).first()   
+        self.db.delete(db_product)
+        self.db.commit()
+        return db_product
+            
     def update_product(self, product_id: int, new_product: ProductBase):
         try:
             db_product = self.get_product(product_id)
@@ -28,7 +34,3 @@ class ProductRepository:
             self.db.commit()
             self.db.refresh(db_product)
             return db_product
-        
-        except Exception as e:
-            self.db.rollback()
-            raise Exception(f"Error updating product: {str(e)}")
