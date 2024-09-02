@@ -8,6 +8,10 @@ class ProductRepository:
     def get_product(self, product_id: int):
         return self.db.query(ProductModel).filter(ProductModel.id == product_id).first()
     
+    def get_all_products(self):
+        products = self.db.query(ProductModel).all()
+        return products
+    
     def create_product(self, product: ProductBase):
         db_product = ProductModel(product_name=product.product_name)
         self.db.add(db_product)
