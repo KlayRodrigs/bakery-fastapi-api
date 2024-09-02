@@ -27,3 +27,8 @@ class ProductService():
         except Exception as e:
             return {"message": "Something went wrong, the product was not added", "error": str(e)}
             
+    def update_product(self, product_id: int, new_product: ProductBase):
+        product = self.product_repository.update_product(product_id, new_product)
+        if not product:
+            raise HTTPException(status_code=404, detail='Product not found')
+        return product

@@ -24,7 +24,17 @@ async def get_product(product_id: int, product_service: ProductService = Depends
     product = product_service.get_product(product_id)
     return product
 
+
 @router.get('/all-products/')
 async def get_all_products(product_service: ProductService = Depends(get_product_service)):
     products = product_service.get_all_products()
     return products
+
+@router.put('/edit-product/{product_id}')
+async def update_product(product_id: int, new_product: ProductBase, product_service: ProductService = Depends(get_product_service)):
+    try:
+        product = product_service.update_product(product_id, new_product)
+        return product
+    except Exception as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
+
