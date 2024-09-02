@@ -13,3 +13,18 @@ class ProductRepository:
         self.db.add(db_product)
         self.db.commit()
         return db_product
+    
+    def update_product(self, product_id: int, new_product: ProductBase):
+        try:
+            db_product = self.get_product(product_id)
+            if not db_product:
+                raise Exception(f"Product with ID {product_id} not found")
+
+            db_product.product_name = new_product.product_name or db_product.product_name
+            self.db.commit()
+            self.db.refresh(db_product)
+            return db_product
+        
+        except Exception as e:
+            self.db.rollback()
+            raise Exception(f"Error updating product: {str(e)}")
