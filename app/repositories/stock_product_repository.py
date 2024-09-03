@@ -7,7 +7,7 @@ class StockProductRepository:
     def __init__(self, db: Session):
         self.db = db
 
-    def create_or_update_stock_product(self, stock_product: StockProductBase):
+    def create_stock_product(self, stock_product: StockProductBase):
         try:
             log.info(f"Checking if product with ID {stock_product.product_id} exists")
             product = self.db.query(ProductModel).filter(ProductModel.id == stock_product.product_id).first()
@@ -32,4 +32,17 @@ class StockProductRepository:
         except Exception as e:
             log.error(f"Error in create_or_update_stock_product: {str(e)}")
             self.db.rollback()
+            raise
+
+    def get_stock_product_by_id(self, stock_product_id: int):
+        try:
+            log.info(f"Fetching stock product with ID {stock_product_id}")
+            stock_product = self.db.query(StockProductModel).filter(StockProductModel.id == stock_product_id).first()
+            if stock_product:
+                log.info(f"Stock product found: {stock_product}")
+            else:
+                log.warning(f"No stock product found with ID {stock_product_id}")
+            return stock_product
+        except Exception as e:
+            log.error(f"Error in get_stock_product_by_id: {str(e)}")
             raise

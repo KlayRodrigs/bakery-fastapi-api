@@ -12,11 +12,17 @@ def get_stock_product_service(db: Session = Depends(get_db)) -> StockProductServ
     return StockProductService(stock_product_repository=stock_product_repository)
 
 @router.post('/add/')
-async def create_or_update_stock_product(stock_product_base: StockProductBase,
+async def create_stock_product(stock_product_base: StockProductBase,
                                          stock_product_service: StockProductService = Depends(get_stock_product_service)):
-    response = stock_product_service.create_or_update_stock_product(stock_product_base)
+    
+    response = stock_product_service.create_stock_product(stock_product_base)
     if "error" in response:
         if response["error"] == "validation_error":
             raise HTTPException(status_code=400, detail=response['message'])
         raise HTTPException(status_code=500, detail=response['message'])
     return response
+
+@router.get('/{stock_products_id}')
+async def get_stock_product_by_id(stock_product_id: int, stock_product_service: StockProductService = Depends(get_stock_product_service)):
+    stock_product = stock_product_service.get_stock_product_by_id(stock_product_id)
+    return stock_product
