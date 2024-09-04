@@ -26,3 +26,8 @@ async def create_stock_product(stock_product_base: StockProductBase,
 async def get_stock_product_by_id(stock_product_id: int, stock_product_service: StockProductService = Depends(get_stock_product_service)):
     stock_product = stock_product_service.get_stock_product_by_id(stock_product_id)
     return stock_product
+
+@router.get('/list_products/')
+async def get_all_stock_products(stock_product_service: StockProductService = Depends(get_stock_product_service)):
+    stock_products = stock_product_service.get_all_stock_products()
+    return stock_products

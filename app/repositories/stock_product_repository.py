@@ -7,23 +7,19 @@ class StockProductRepository:
     def __init__(self, db: Session):
         self.db = db
 
-    def create_stock_product(self, stock_product: StockProductBase):
+    def create_or_update_stock_product(self, stock_product: StockProductBase):
         try:
-            log.info(f"Checking if product with ID {stock_product.product_id} exists")
             product = self.db.query(ProductModel).filter(ProductModel.id == stock_product.product_id).first()
             if not product:
                 raise ValueError("Product not found")
 
-            log.info(f"Checking if stock product with product ID {stock_product.product_id} exists")
             existing_stock_product = self.db.query(StockProductModel).filter(StockProductModel.product_id == stock_product.product_id).first()
             if existing_stock_product:
-                log.info(f"Updating quantity for stock product with product ID {stock_product.product_id}")
                 existing_stock_product.quantity += stock_product.quantity
                 self.db.commit()
                 self.db.refresh(existing_stock_product)
                 return existing_stock_product
             else:
-                log.info(f"Creating new stock product with product ID {stock_product.product_id}")
                 db_stock_product = StockProductModel(quantity=stock_product.quantity, product_id=stock_product.product_id)
                 self.db.add(db_stock_product)
                 self.db.commit()
@@ -36,13 +32,16 @@ class StockProductRepository:
 
     def get_stock_product_by_id(self, stock_product_id: int):
         try:
-            log.info(f"Fetching stock product with ID {stock_product_id}")
             stock_product = self.db.query(StockProductModel).filter(StockProductModel.id == stock_product_id).first()
-            if stock_product:
-                log.info(f"Stock product found: {stock_product}")
-            else:
-                log.warning(f"No stock product found with ID {stock_product_id}")
             return stock_product
         except Exception as e:
             log.error(f"Error in get_stock_product_by_id: {str(e)}")
+            raise
+
+    def get_all_stock_products(self):
+        try:
+            stock_products = self.db.query(StockProductModel).all()
+            return stock_products
+        except Exception as e:
+            log.error(f"Error in get_all_stock_products: {str(e)}")
             raise

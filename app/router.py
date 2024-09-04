@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+
 from controllers.product_controller import router as product
 from controllers.stock_product_controller import router as stock
 
