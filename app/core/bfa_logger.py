@@ -1,16 +1,17 @@
 import logging
 
+
 class BFALogger:
     def __init__(self, name: str, level: int = logging.INFO):
         self.logger = logging.getLogger(name)
         self.logger.setLevel(level)
-        
+
         handler = logging.StreamHandler()
         handler.setLevel(level)
-        
+
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         handler.setFormatter(formatter)
-        
+
         self.logger.addHandler(handler)
 
     def debug(self, message: str):
@@ -27,4 +28,3 @@ class BFALogger:
 
     def critical(self, message: str):
         self.logger.critical(message)
-

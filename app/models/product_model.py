@@ -1,13 +1,24 @@
+from typing import Optional, List
+
 from pydantic import BaseModel
-from sqlalchemy import Column, Integer, String, DateTime, func
+from sqlalchemy import Column, String, Integer, Float
 from core.database import Base
+from sqlalchemy.orm import relationship
+
+
+from models.trolley_model import trolley_items
+
 
 class ProductModel(Base):
     __tablename__ = 'products'
 
-    id = Column(Integer, primary_key = True, index = True)
-    product_name = Column(String, index = True)
-    created_at = Column(DateTime,index = True, server_default=func.now())
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    product_name = Column(String, index=True, unique=True)
+    product_price = Column(Float, index=True)
 
-class ProductBase(BaseModel):
-    product_name: str
+    stock = relationship('StockProductModel', back_populates='product')
+    trolleys = relationship('TrolleyModel', secondary=trolley_items, back_populates='products')
+
+
+
+
