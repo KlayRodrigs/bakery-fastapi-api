@@ -1,0 +1,67 @@
+# Ignorar ambientes virtuais
+venv/
+env/
+.env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignorar configurações específicas do IDE
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Ignorar arquivos de log
+*.log
+
+# Ignorar arquivos de banco de dados SQLite
+*.sqlite3
+*.db
+
+# Ignorar arquivos de configuração do sistema
+.DS_Store
+Thumbs.db
+
+# Ignorar arquivos de testes
+.coverage
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+*.pyd
+*.pyo
+*.pyd
+
+# Ignorar arquivos de dependências
+requirements.txt
+Pipfile.lock
+poetry.lock
+
+# Ignorar arquivos de pacotes
+*.egg
+*.egg-info
+dist/
+build/
+*.egg-info/
+*.pyo
+*.pyd
+
+# Ignorar arquivos temporários
+*.swp
+*.swo
+*.tmp
+*.bak
+*.old
+*.orig
+
+# Ignorar arquivos de configurações pessoais
+*.sublime-project
+*.sublime-workspace
+*.idea/
+*.vscode/
+
+# Ignorar arquivos de teste de integração
+*.test
+*.tests
